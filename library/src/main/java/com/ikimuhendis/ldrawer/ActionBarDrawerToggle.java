@@ -1,6 +1,6 @@
 package com.ikimuhendis.ldrawer;
 
-import android.app.ActionBar;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -15,12 +15,15 @@ import android.widget.ImageView;
 
 import java.lang.reflect.Method;
 
+//v7
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 
 public class ActionBarDrawerToggle extends android.support.v4.app.ActionBarDrawerToggle {
 
     private static final String TAG = ActionBarDrawerToggle.class.getName();
 
-    protected Activity mActivity;
+    protected ActionBarActivity mActivity;
     protected DrawerLayout mDrawerLayout;
 
     protected int mOpenDrawerContentDescRes;
@@ -32,7 +35,7 @@ public class ActionBarDrawerToggle extends android.support.v4.app.ActionBarDrawe
         super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
     }
 
-    public ActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout, DrawerArrowDrawable drawerImage, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+    public ActionBarDrawerToggle(ActionBarActivity activity, DrawerLayout drawerLayout, DrawerArrowDrawable drawerImage, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
         super(activity, drawerLayout, R.drawable.ic_drawer, openDrawerContentDescRes, closeDrawerContentDescRes);
         mActivity = activity;
         mDrawerLayout = drawerLayout;
@@ -127,7 +130,7 @@ public class ActionBarDrawerToggle extends android.support.v4.app.ActionBarDrawe
             try {
                 Method setHomeAsUpIndicator = ActionBar.class.getDeclaredMethod("setHomeAsUpIndicator",
                     Drawable.class);
-                setHomeAsUpIndicator.invoke(mActivity.getActionBar(), mDrawerImage);
+                setHomeAsUpIndicator.invoke(mActivity.getSupportActionBar(), mDrawerImage);
                 return;
             } catch (Exception e) {
                 Log.e(TAG, "setActionBarUpIndicator error", e);
@@ -156,14 +159,14 @@ public class ActionBarDrawerToggle extends android.support.v4.app.ActionBarDrawe
     }
 
     protected void setActionBarDescription() {
-        if (mActivity != null && mActivity.getActionBar() != null) {
+        if (mActivity != null && mActivity.getSupportActionBar() != null) {
             try {
                 Method setHomeActionContentDescription = ActionBar.class.getDeclaredMethod(
                     "setHomeActionContentDescription", Integer.TYPE);
-                setHomeActionContentDescription.invoke(mActivity.getActionBar(),
+                setHomeActionContentDescription.invoke(mActivity.getSupportActionBar(),
                     mDrawerLayout.isDrawerOpen(GravityCompat.START) ? mOpenDrawerContentDescRes : mCloseDrawerContentDescRes);
                 if (Build.VERSION.SDK_INT <= 19) {
-                    mActivity.getActionBar().setSubtitle(mActivity.getActionBar().getSubtitle());
+                    mActivity.getSupportActionBar().setSubtitle(mActivity.getSupportActionBar().getSubtitle());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "setActionBarUpIndicator", e);
